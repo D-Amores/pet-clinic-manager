@@ -1,5 +1,6 @@
 import Veterinarian from "../models/Veterinarian.js";
 import generateJWT from "../helpers/generateJwt.js";
+import generateId from "../helpers/generateId.js";
 
 const resgister = async (req, res) => {
     const { email}  = req.body
@@ -72,11 +73,65 @@ const authenticate = async (req, res) => {
 
 }
 
+const forgotPassword = async (req, res) => {
+    const { email } = req.body;
+    const existVeterinarian = await Veterinarian.findOne({email});
+
+    if (!existVeterinarian) {
+        const error = new Error('El usuario no existe');
+        return res.status(400).json({msg: error.message})
+    }
+
+    try {
+        existVeterinarian.token = generateId();
+        await existVeterinarian.save();
+        res.json({msg: 'Hemos enviando un email con las instrucciones'})
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+const checkToken = async (req, res) => {
+    const { token } = req.params;
+
+    const validToken = await Veterinarian.findOne({ token })
+
+    if(validToken) {
+        res.json({ msg: 'token valido y el correo existe'});
+    } else {
+        const error = new Error('Token no valido - checktoken');
+        return res.status(400).json({msg: error.message});
+    }
+};
+
+const newPassword = async (req, res) => {
+    const { password } = req.body;
+    const { token } = req.params;
+
+    const veterinarian = await Veterinarian.findOne({token});
+    if(!veterinarian){
+        const error = new Error('Hubo un Error');
+        return res.status(400).json({msg: error.message});
+    }
+
+    try {
+        veterinarian.token = null;
+        veterinarian.password = password;
+        await veterinarian.save();
+        res.json({ msg: 'Password modificado correctamente...'});
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 
 
 export {
     resgister,
     profile,
     confirm,
-    authenticate
+    authenticate,
+    forgotPassword,
+    checkToken,
+    newPassword
 } 
