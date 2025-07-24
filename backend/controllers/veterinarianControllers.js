@@ -20,7 +20,9 @@ const resgister = async (req, res) => {
 };
 
 const profile = (req, res) => {
-    res.json({msg: 'Mostrando perf aail...'})
+    const {veterinarian} = req;
+
+    res.json({profile: veterinarian})
 }
 
 const confirm = async (req, res) => {

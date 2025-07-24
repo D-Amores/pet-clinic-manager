@@ -4,8 +4,6 @@ import { resgister, profile, confirm, authenticate } from '../controllers/veteri
 import checkAuth from '../middleware/authMiddleware.js';
 
 
-
-
 router.post('/', resgister);
 router.get('/confirm/:token', confirm);
 router.post('/login', authenticate);
