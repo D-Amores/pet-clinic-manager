@@ -2,7 +2,7 @@ import Veterinarian from "../models/Veterinarian.js";
 import generateJWT from "../helpers/generateJwt.js";
 import generateId from "../helpers/generateId.js";
 
-const resgister = async (req, res) => {
+const register = async (req, res) => {
     const { email}  = req.body
 
     const userExists = await Veterinarian.findOne({email});
@@ -12,11 +12,17 @@ const resgister = async (req, res) => {
     }
 
     try {
-        const veterinarian = new Veterinarian(req.body);
-        const veterinarianSaved = await veterinarian.save();
+    const veterinarian = new Veterinarian(req.body);
+    const veterinarianSaved = await veterinarian.save();
+
+    res.status(201).json({
+        msg: 'Creado correctamente, revisa tu Email',
+        veterinarian: veterinarianSaved
+    });
 
     } catch (error) {
         console.log(error);
+        res.status(500).json({ msg: 'Hubo un error en el servidor' });
     }
 };
 
@@ -127,7 +133,7 @@ const newPassword = async (req, res) => {
 
 
 export {
-    resgister,
+    register,
     profile,
     confirm,
     authenticate,

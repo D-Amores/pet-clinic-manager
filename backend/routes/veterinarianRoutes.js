@@ -1,10 +1,10 @@
 import express from 'express';
 const router = express.Router();
-import { resgister, profile, confirm, authenticate, forgotPassword, checkToken, newPassword } from '../controllers/veterinarianControllers.js';
+import { register, profile, confirm, authenticate, forgotPassword, checkToken, newPassword } from '../controllers/veterinarianControllers.js';
 import checkAuth from '../middleware/authMiddleware.js';
 
 // public area
-router.post('/', resgister);
+router.post('/', register);
 router.get('/confirm/:token', confirm);
 router.post('/login', authenticate);
 router.post('/forgot-password', forgotPassword);

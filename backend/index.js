@@ -1,5 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import cors from 'cors';
 import conectarDB from './config/db.js';
 import veterinarianRoutes from './routes/veterinarianRoutes.js';
 import patientRoutes from './routes/patientRoutes.js';
@@ -10,6 +11,20 @@ app.use(express.json());
 dotenv.config();
 
 conectarDB();
+
+const allowedDomains = ["http://localhost:5173"];
+
+const corsOptions = {
+    origin: function(origin, callback) {
+        if(allowedDomains.indexOf(origin) !== -1){
+            callback(null, true);
+        } else {
+            callback(new Error('No permitido por cors'))
+        }
+    }
+}
+
+app.use(cors(corsOptions));
 
 app.use('/api/veterinarians', veterinarianRoutes);
 app.use('/api/patient', patientRoutes);
