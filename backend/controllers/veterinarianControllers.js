@@ -1,9 +1,10 @@
 import Veterinarian from "../models/Veterinarian.js";
 import generateJWT from "../helpers/generateJwt.js";
 import generateId from "../helpers/generateId.js";
+import emailRegister from "../helpers/emailRegister.js";
 
 const register = async (req, res) => {
-    const { email}  = req.body
+    const { email, name}  = req.body
 
     const userExists = await Veterinarian.findOne({email});
     if (userExists) {
@@ -14,6 +15,9 @@ const register = async (req, res) => {
     try {
     const veterinarian = new Veterinarian(req.body);
     const veterinarianSaved = await veterinarian.save();
+
+    // send email
+    emailRegister({email, name, token: veterinarianSaved.token});
 
     res.status(201).json({
         msg: 'Creado correctamente, revisa tu Email',
@@ -46,7 +50,7 @@ const confirm = async (req, res) => {
         userConfirm.confirmed = true;
         await userConfirm.save();
 
-        res.json({msg: 'confirmando cuenta...'})
+        res.json({msg: 'cuenta confirmada con exito'})
     } catch (error) {
         console.log(error);
     }
