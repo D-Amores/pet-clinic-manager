@@ -6,11 +6,13 @@ import ForgetPassword from './pages/ForgotPassword';
 import ConfirmAccount from './pages/ConfirmAccount';
 import NewPassword from './pages/NewPassword';
 
+import { AuthProvider } from './context/AuthProvider';
 
 function App() {
 
   return (
     <BrowserRouter>
+    <AuthProvider>
       <Routes>
         <Route path='/' element={<AuthLayout/>}>
           <Route index element={<Login />}/>
@@ -21,6 +23,7 @@ function App() {
           <Route path='confirm/:id' element={<ConfirmAccount/>} />
         </Route>
       </Routes>
+    </AuthProvider>
     </BrowserRouter>
   )
 }

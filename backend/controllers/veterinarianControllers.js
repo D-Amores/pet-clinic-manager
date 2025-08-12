@@ -34,7 +34,7 @@ const register = async (req, res) => {
 const profile = (req, res) => {
     const {veterinarian} = req;
 
-    res.json({profile: veterinarian})
+    res.json(veterinarian)
 }
 
 const confirm = async (req, res) => {
