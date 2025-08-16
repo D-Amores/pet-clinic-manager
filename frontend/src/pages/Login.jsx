@@ -10,6 +10,8 @@ import clientAxios from '../config/axios';
   const [password, setPassword] = useState('');
   const [alert, setAlert] = useState({});
 
+  const { setAuth } = useAuth();
+
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -26,7 +28,7 @@ import clientAxios from '../config/axios';
     try {
       const {data} = await clientAxios.post('/veterinarians/login', {email, password});
       localStorage.setItem('token', data.token);
-
+      setAuth(data);
       navigate('/admin')
     } catch (error) {
       setAlert({
