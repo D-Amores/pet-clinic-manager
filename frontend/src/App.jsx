@@ -1,10 +1,12 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AuthLayout from './layout/AuthLayout';
+import ProtectedRoute from './layout/ProtectedRoute';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ForgetPassword from './pages/ForgotPassword';
 import ConfirmAccount from './pages/ConfirmAccount';
 import NewPassword from './pages/NewPassword';
+import ManagePatient from './pages/ManagePatient';
 
 import { AuthProvider } from './context/AuthProvider';
 
@@ -22,6 +24,11 @@ function App() {
           <Route path='forget-password/:token' element={<NewPassword/>} />
           <Route path='confirm/:id' element={<ConfirmAccount/>} />
         </Route>
+
+        <Route path='/admin' element={<ProtectedRoute/>}>
+          <Route index element={<ManagePatient/>} />
+        </Route>
+
       </Routes>
     </AuthProvider>
     </BrowserRouter>
